@@ -1,0 +1,2 @@
+class HantekError(Exception):
+    pass
