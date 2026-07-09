@@ -1,3 +1,10 @@
+from pathlib import Path
+import sys
+
+ROOT = Path(__file__).resolve().parent.parent
+
+sys.path.insert(0, str(ROOT / "third_party"))
+
 from PyHT6022.LibUsbScope import Oscilloscope
 
 
