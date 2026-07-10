@@ -1,88 +1,67 @@
-# from pathlib import Path
-# import sys
+from pathlib import Path
+import sys
 
-# ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / "third_party"))
 
-# sys.path.insert(0, str(ROOT / "third_party"))
-
-# from PyHT6022.LibUsbScope import Oscilloscope
+from PyHT6022.LibUsbScope import Oscilloscope
 
 
-# class HantekDriver:
-#     def __init__(self):
-#         self.scope = Oscilloscope()
-#         self.connected = False
+class HantekDriver:
+    def __init__(self):
+        self.scope = Oscilloscope()
+        self.connected = False
 
-#     def connect(self):
-#         print("Setup...")
-#         self.scope.setup()
+    def connect(self):
+        print("Setup...")
+        self.scope.setup()
 
-#         print("Open handle...")
-#         self.scope.open_handle()
+        print("Open handle...")
+        self.scope.open_handle()
 
-#         self.connected = True
-#         print("Connected")
+        self.connected = True
+        print("Connected")
 
-#     def configure(
-#         self,
-#         sample_rate_index=0x04,
-#         voltage_range=0x01,
-#         channels=2,
-#     ):
-#         if not self.connected:
-#             raise RuntimeError("Scope is not connected")
+    def configure(
+        self,
+        sample_rate_index=0x04,
+        voltage_range=0x01,
+        channels=2,
+    ):
+        if not self.connected:
+            raise RuntimeError("Scope is not connected")
 
-#         print("Configure...")
+        print("Configure...")
 
-#         self.scope.set_sample_rate(sample_rate_index)
-#         self.scope.set_ch1_voltage_range(voltage_range)
+        print("-> set_sample_rate")
+        self.scope.set_sample_rate(sample_rate_index)
+        print("OK")
 
-#         if channels == 2:
-#             self.scope.set_num_channels(2)
-#         else:
-#             self.scope.set_num_channels(1)
+        print("-> set_ch1_voltage_range")
+        self.scope.set_ch1_voltage_range(voltage_range)
+        print("OK")
 
-#         print("Configured")
+        print("-> set_num_channels")
+        if channels == 2:
+            self.scope.set_num_channels(2)
+        else:
+            self.scope.set_num_channels(1)
+        print("OK")
 
-#     def capture(self, data_points=0x2000):
-#         if not self.connected:
-#             raise RuntimeError("Scope is not connected")
+        print("Configured")
 
-#         print("Capture...")
-#         ch1, ch2 = self.scope.read_data(data_points)
+    def capture(self, data_points=0x2000):
+        if not self.connected:
+            raise RuntimeError("Scope is not connected")
 
-#         return ch1, ch2
+        print("Capture...")
+        ch1, ch2 = self.scope.read_data(data_points)
 
-#     def close(self):
-#         if self.connected:
-#             print("Close handle...")
-#             self.scope.close_handle()
-#             self.connected = False
-#             print("Closed")
-def configure(
-    self,
-    sample_rate_index=0x04,
-    voltage_range=0x01,
-    channels=2,
-):
-    if not self.connected:
-        raise RuntimeError("Scope is not connected")
+        return ch1, ch2
 
-    print("Configure...")
-
-    print("-> set_sample_rate")
-    self.scope.set_sample_rate(sample_rate_index)
-    print("OK")
-
-    print("-> set_ch1_voltage_range")
-    self.scope.set_ch1_voltage_range(voltage_range)
-    print("OK")
-
-    print("-> set_num_channels")
-    if channels == 2:
-        self.scope.set_num_channels(2)
-    else:
-        self.scope.set_num_channels(1)
-    print("OK")
-
-    print("Configured")
+    def close(self):
+        if self.connected:
+            print("Close handle...")
+            self.scope.close_handle()
+            self.connected = False
+            print("Closed")
