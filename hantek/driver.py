@@ -36,10 +36,21 @@ class HantekDriver:
 
         print("Configure...")
 
+        print("1. set_sample_rate")
         self.scope.set_sample_rate(sample_rate_index)
+        print("OK")
+
+        print("2. set_ch1_voltage_range")
         self.scope.set_ch1_voltage_range(voltage_range)
+        print("OK")
+
+        print("3. set_ch2_voltage_range")
         self.scope.set_ch2_voltage_range(voltage_range)
+        print("OK")
+
+        print("4. set_num_channels")
         self.scope.set_num_channels(2 if channels == 2 else 1)
+        print("OK")
 
         print("Configured")
 
