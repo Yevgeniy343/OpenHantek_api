@@ -13,6 +13,9 @@ class HantekDriver:
         self.connected = False
 
     def connect(self):
+        if self.connected:
+            return
+
         print("Setup...")
         self.scope.setup()
 
@@ -29,39 +32,34 @@ class HantekDriver:
         channels=2,
     ):
         if not self.connected:
-            raise RuntimeError("Scope is not connected")
+            raise RuntimeError("Осциллограф не подключен")
 
         print("Configure...")
 
-        print("-> set_sample_rate")
         self.scope.set_sample_rate(sample_rate_index)
-        print("OK")
-
-        print("-> set_ch1_voltage_range")
         self.scope.set_ch1_voltage_range(voltage_range)
-        print("OK")
-
-        print("-> set_num_channels")
-        if channels == 2:
-            self.scope.set_num_channels(2)
-        else:
-            self.scope.set_num_channels(1)
-        print("OK")
+        self.scope.set_ch2_voltage_range(voltage_range)
+        self.scope.set_num_channels(2 if channels == 2 else 1)
 
         print("Configured")
 
     def capture(self, data_points=0x2000):
         if not self.connected:
-            raise RuntimeError("Scope is not connected")
+            raise RuntimeError("Осциллограф не подключен")
 
         print("Capture...")
+
         ch1, ch2 = self.scope.read_data(data_points)
 
         return ch1, ch2
 
     def close(self):
-        if self.connected:
-            print("Close handle...")
-            self.scope.close_handle()
-            self.connected = False
-            print("Closed")
+        if not self.connected:
+            return
+
+        print("Close handle...")
+
+        self.scope.close_handle()
+        self.connected = False
+
+        print("Closed")
